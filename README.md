@@ -1,69 +1,52 @@
-# ⏱️ PomoCLI
+# PomoCLI
 
-**PomoCLI** adalah aplikasi Pomodoro Timer minimalis berbasis command-line interface (CLI) yang ditulis menggunakan bahasa pemrograman C. Aplikasi ini dirancang agar sangat ringan dan mengintegrasikan notifikasi desktop bawaan sistem operasi (Linux & macOS) untuk membantu Anda tetap fokus dan produktif.
-
----
-
-## ✨ Fitur Utama
-
-- **Pomodoro Loop Otomatis**: Siklus terstruktur yang terdiri dari sesi Fokus, Istirahat Pendek (Rest), dan Istirahat Panjang (Long Rest).
-- **Notifikasi Sistem Bawaan (OS-Native)**:
-  - **Linux**: Menggunakan utilitas `notify-send`.
-  - **macOS**: Menggunakan AppleScript (`osascript`) dengan suara notifikasi default.
-- **Sangat Ringan**: Dibuat murni dengan bahasa C tanpa dependensi eksternal tambahan.
+PomoCLI is a minimalist command-line interface (CLI) Pomodoro Timer application written in C. It is designed to be extremely lightweight and integrates native desktop notifications (Linux & macOS) to help you stay focused and productive.
 
 ---
 
-## ⚙️ Cara Kerja Siklus (Default)
+## Key Features
 
-Secara default, aplikasi dikonfigurasi dengan pengaturan berikut (dalam hitungan detik/menit tergantung pengali `mul`):
-- **Focus Time**: 25 unit waktu.
-- **Short Rest**: 5 unit waktu.
-- **Long Rest**: 15 unit waktu.
-- **Siklus Sesi**: Setiap **4 sesi Fokus**, Anda akan mendapatkan **1 sesi Istirahat Panjang**.
-
----
-
-## 🛠️ Persyaratan Sistem
-
-Sebelum menjalankan aplikasi, pastikan Anda memiliki:
-1. **C Compiler**: `gcc` atau `clang`.
-2. **Sistem Notifikasi**:
-   - **Linux**: Pastikan paket `libnotify` (untuk `notify-send`) sudah terinstal (biasanya sudah ada di sebagian besar distro linux desktop).
-   - **macOS**: Tidak memerlukan instalasi tambahan karena menggunakan utilitas bawaan `osascript`.
+- Automatic Pomodoro Loop: Structured cycles consisting of Focus, Short Rest, and Long Rest sessions.
+- Native OS Notifications:
+  - Linux: Uses the `notify-send` utility.
+  - macOS: Uses AppleScript (`osascript`) with the default notification sound.
+- Extremely Lightweight: Written in pure C without any external dependencies.
 
 ---
 
-## 🚀 Instalasi & Penggunaan
+## How the Cycle Works (Default)
 
-### 1. Klon Repositori (atau masuk ke folder proyek)
-```bash
-cd /home/aditya/Documents/pomocli
-```
+By default, the application is configured with the following settings (in seconds/minutes depending on the multiplier `mul`):
+- Focus Time: 25 time units (governed by the `focus` variable).
+- Short Rest: 5 time units (governed by the `rest` variable).
+- Long Rest: 15 time units (governed by the `lrest` variable).
+- Session Cycle: After every 4 Focus sessions (governed by the `fsesi` variable), you will get 1 Long Rest session.
 
-### 2. Kompilasi Kode
-Gunakan GCC untuk mengompilasi file [main.c](file:///home/aditya/Documents/pomocli/main.c) menjadi file eksekutabel:
-```bash
-gcc main.c -o pomocli
-```
-
-### 3. Jalankan Aplikasi
-```bash
-./pomocli
-```
+To change these settings, you can edit their values in main.c . For example, changing the `mul` variable to `60` will convert the time units into minutes. For a detailed guide, please refer to the [Time Customization](#-time-customization) section below.
 
 ---
 
-## 🔧 Kustomisasi Waktu
-Jika Anda ingin mengubah durasi waktu fokus, istirahat, atau pengali waktu dari detik ke menit, Anda dapat mengedit baris kode berikut di [main.c](file:///home/aditya/Documents/pomocli/main.c#L24):
+## System Requirements
+
+Before running the application, make sure you have:
+1. C Compiler: `gcc` or `clang`.
+2. Notification System:
+   - Linux: Ensure the `libnotify` package (for `notify-send`) is installed (usually pre-installed on most desktop distributions).
+   - macOS: No additional installation needed, as it uses the built-in `osascript` utility.
+
+---
+
+## Time Customization
+
+If you want to customize the focus duration, rest duration, or the time multiplier (e.g., from seconds to minutes), you can edit the configuration line in main.c:
 
 ```c
 int focus = 25, rest = 5, lrest = 15, mul = 1, fsesi = 4;
 ```
 
-**Penjelasan Variabel:**
-- `focus`: Durasi sesi fokus (default: `25`).
-- `rest`: Durasi sesi istirahat pendek (default: `5`).
-- `lrest`: Durasi sesi istirahat panjang (default: `15`).
-- `mul`: Pengali waktu. Ubah `mul = 60` jika ingin mengonversi satuan waktu di atas menjadi **menit** (karena defaultnya adalah detik untuk kemudahan pengujian).
-- `fsesi`: Jumlah sesi fokus sebelum memulai istirahat panjang (default: `4`).
+Variable Explanations:
+- `focus`: Focus session duration (default: `25`).
+- `rest`: Short rest session duration (default: `5`).
+- `lrest`: Long rest session duration (default: `15`).
+- `mul`: Time multiplier. Change `mul = 60` to convert the time units above to minutes (default is `1` for seconds to facilitate testing).
+- `fsesi`: Number of focus sessions before starting a long rest (default: `4`).
