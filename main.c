@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+// Function to push a notification
 void pushNotify(char* header, char* desc) {
     char args[150];
 
@@ -15,12 +16,20 @@ void pushNotify(char* header, char* desc) {
     system(args);
 }
 
+// TODO: change current printf with this function
+// Function to print a line with a carriage return and clear the line
+void printLine(char* line) {
+    printf("\r\x1b[2K%s", line);
+}
+
 int main() {
-    // focus = Timer for focus
-    // rest = Timer for normal rest
-    // lrest = Timer for long rest
-    // mul = Multiplyer for Timer, the default is 60 cause from minute to second
-    // fsesi = Count for long rest (fsesi = 4 means 4 time focus to get long rest)
+    // Here's the variables that define the timer settings
+    // 1. focus = Timer for focus
+    // 2. rest = Timer for normal rest
+    // 3. lrest = Timer for long rest
+    // 4. mul = Multiplyer for Timer, the default is 60 cause from minute to second
+    // 5. fsesi = Count for long rest (fsesi = 4 means 4 time focus to get long rest)
+
     int focus = 25, rest = 5, lrest = 15, mul = 1, fsesi = 4;
 
     int state = 0;
