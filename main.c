@@ -17,50 +17,63 @@ void pushNotify(char* header, char* desc) {
 }
 
 // Function to print a line with a carriage return and clear the line
-void printLine(char* line) {
-    printf("\r\x1b[2K%s", line);
+void printLine(char* head, char* desc) {
+    printf("\x1b[2A\x1b[J%s\n%s\n", head, desc);
     fflush(stdout);
-}
-
-// Function to print and push notification
-void notify(char* header, char* desc) {
-    printf("%s\n%s\n\n", header, desc);
-    pushNotify(header, desc);
 }
 
 // Function to run the focus timer
 void runFocus(int state, int focus, int rest, int lrest, int mul, int fsesi) {
-    sleep(focus * mul);
+    char desc[100], head[100];
 
-    char desc[100];
+    for (int i = 0; i < focus * mul; i++) {
+        sprintf(head, "Note: Focus %d seconds", focus * mul);
+        sprintf(desc, "Time elapsed: %d seconds", i);
+        printLine(head, desc);
+        sleep(1);
+    }
+
     if (state == (fsesi * 2 - 2) && state != 0) {
         sprintf(desc, "Now take a long rest. Note: Long Rest %d sec", lrest * mul);
-        notify("Thankyou for your focus!", desc);
+        pushNotify("Thankyou for your focus!", desc);
     } else {
         sprintf(desc, "Now take some rest. Note: Rest %d sec", rest * mul);
-        notify("Focus is end!", desc);
+        pushNotify("Focus is end!", desc);
     }
 }
 
 // Function to run the rest timer
 void runRest(int state, int focus, int rest, int lrest, int mul, int fsesi) {
-    char desc[100];
+    char head[100], desc[100];
+
     sprintf(desc, "Note: Focus %d sec", focus * mul);
 
     if (state % (fsesi * 2 - 1) != 0) {
-        sleep(rest * mul);
+        for (int i = 0; i < rest * mul; i++) {
+            sprintf(head, "Note: Rest %d seconds", rest * mul);
+            sprintf(desc, "Time elapsed: %d seconds", i);
+            printLine(head, desc);
+            sleep(1);
+        }
     } else {
-        sleep(lrest * mul);
+        for (int i = 0; i < lrest * mul; i++) {
+            sprintf(head, "Note: Long Rest %d seconds", lrest * mul);
+            sprintf(desc, "Time elapsed: %d seconds", i);
+            printLine(head, desc);
+            sleep(1);
+        }
     }
 
-    notify("Rest Times Up!", desc);
+    pushNotify("Rest Times Up!", desc);
 }
 
 int main() {
-    int focus = 10, rest = 5, lrest = 15, mul = 1, fsesi = 4;
+    int focus = 25, rest = 5, lrest = 15, mul = 60, fsesi = 4;
     int state = 0;
 
-    printf("Timer start %d sec!\n\n", focus * mul);
+    char desc[100];
+    sprintf(desc, "Note: Focus %d sec", focus * mul);
+    pushNotify("Focus Start!", desc);
 
     while (1){
         // timer Focus
