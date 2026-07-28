@@ -4,13 +4,13 @@
 
 // Function to push a notification
 void pushNotify(char* header, char* desc) {
-    char args[150];
+    char args[300];
 
     // Push notification OS Based
     #if defined (__linux__)
-        sprintf(args, "notify-send '%s' '%s'", header, desc);
+        snprintf(args, sizeof(args), "notify-send '%s' '%s'", header, desc);
     #elif defined(__APPLE__) || defined(__MACH__)
-        sprintf(args, "osascript -e 'display notification \"%s\" with title \"%s\" sound name \"Glass\"'", desc, header);
+        snprintf(args, sizeof(args), "osascript -e 'display notification \"%s\" with title \"%s\" sound name \"Glass\"'", desc, header);
     #endif
 
     system(args);
@@ -46,8 +46,6 @@ void runFocus(int state, int focus, int rest, int lrest, int mul, int fsesi) {
 void runRest(int state, int focus, int rest, int lrest, int mul, int fsesi) {
     char head[100], desc[100];
 
-    sprintf(desc, "Note: Focus %d sec", focus * mul);
-
     if (state % (fsesi * 2 - 1) != 0) {
         for (int i = 0; i < rest * mul; i++) {
             sprintf(head, "Note: Rest %d seconds", rest * mul);
@@ -64,11 +62,12 @@ void runRest(int state, int focus, int rest, int lrest, int mul, int fsesi) {
         }
     }
 
+    sprintf(desc, "Note: Focus %d sec", focus * mul);
     pushNotify("Rest Times Up!", desc);
 }
 
 int main() {
-    int focus = 25, rest = 5, lrest = 15, mul = 60, fsesi = 4;
+    int focus = 10, rest = 5, lrest = 15, mul = 1, fsesi = 4;
     int state = 0;
 
     char desc[100];
