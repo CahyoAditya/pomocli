@@ -16,9 +16,16 @@ void pushNotify(char* header, char* desc) {
     system(args);
 }
 
+// Function to clear the screen (i mean terminal)
+void clear() {
+    printf("\x1b[H\x1b[J");
+    fflush(stdout);
+}
+
 // Function to print a line with a carriage return and clear the line
 void printLine(char* head, char* desc) {
-    printf("\x1b[2A\x1b[J%s\n%s\n", head, desc);
+    clear();
+    printf("\x1b[2;4H%s\x1b[3;4H%s", head, desc);   // Margin 1 line and 4 spaces
     fflush(stdout);
 }
 
@@ -66,9 +73,25 @@ void runRest(int state, int focus, int rest, int lrest, int mul, int fsesi) {
     pushNotify("Rest Times Up!", desc);
 }
 
+// TODO: Implement window width with STDIN_FILENO
+// Why? cause it can refresh every time the window is resized
+// Implement this in printLine function
+int windowWidth() {
+    return 0;
+}
+
+// TODO: Check terminal window size
+// Why? Cause if you have terminal width that too small, the output will be cut off
+// Implement this in start of the program
+void initWindow(){
+
+}
+
 int main() {
     int focus = 10, rest = 5, lrest = 15, mul = 1, fsesi = 4;
     int state = 0;
+
+    clear();
 
     char desc[100];
     sprintf(desc, "Note: Focus %d sec", focus * mul);
