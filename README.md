@@ -10,6 +10,7 @@ PomoCLI is a minimalist command-line interface (CLI) Pomodoro Timer application 
 
 </div>
 
+[Screencast_20260730_082947.webm](https://github.com/user-attachments/assets/4a5194c9-cb62-4d5b-8ad3-9f9329980e6c)
 
 ## Key Features
 
