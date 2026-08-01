@@ -91,6 +91,9 @@ int main() {
 
     clear();
 
+    // TODO: add main menu scene, for now just show "stats" and "press any key to start"
+    // For the future: add a main menu scene with options to start, settings, and exit
+
     char desc[100];
     sprintf(desc, "Note: Focus %d sec", focus * mul);
     pushNotify("Focus Start!", desc);
