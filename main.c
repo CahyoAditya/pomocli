@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+
 
 // Function to push a notification
 void pushNotify(char* header, char* desc) {
@@ -16,6 +19,13 @@ void pushNotify(char* header, char* desc) {
     system(args);
 }
 
+// Function to get the window width
+int windowWidth() {
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    return w.ws_col;
+}
+
 // Function to clear the screen (i mean terminal)
 void clear() {
     printf("\x1b[H\x1b[J");
@@ -25,7 +35,9 @@ void clear() {
 // Function to print a line with a carriage return and clear the line
 void printLine(char* head, char* desc) {
     clear();
-    printf("\x1b[2;4H%s\x1b[3;4H%s", head, desc);   // Margin 1 line and 4 spaces
+    int middleHead = (windowWidth() - (int)strlen(head)) / 2;
+    int middleDesc = (windowWidth() - (int)strlen(desc)) / 2;
+    printf("\x1b[2;%dH%s\x1b[3;%dH%s", middleHead, head, middleDesc, desc);   // Margin 1 line
     fflush(stdout);
 }
 
@@ -71,20 +83,6 @@ void runRest(int state, int focus, int rest, int lrest, int mul, int fsesi) {
 
     sprintf(desc, "Note: Focus %d sec", focus * mul);
     pushNotify("Rest Times Up!", desc);
-}
-
-// TODO: Implement window width with STDIN_FILENO
-// Why? cause it can refresh every time the window is resized
-// Implement this in printLine function
-int windowWidth() {
-    return 0;
-}
-
-// TODO: Check terminal window size
-// Why? Cause if you have terminal width that too small, the output will be cut off
-// Implement this in start of the program
-void initWindow(){
-
 }
 
 int main() {
